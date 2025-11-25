@@ -1,5 +1,6 @@
 #include "ComplexPlane.h"
 #include <complex>
+#include <sstream>
 #include <cmath>
 #include <SFML/Graphics/VertexArray.hpp>
 
@@ -42,12 +43,39 @@ void complexPlane::updateRender()
 {
     if (m_state == CALCULATING)
     {
-        for (int i = 0; i < ; i++)
+        for (int i = 0; i < m_plane_size.y; i++)
         {
-            for (int j = 0; j < ; j++)
+            for (int j = 0; j < m_plane_size.x; j++)
             {
-
+                vArray[j + i * pixelWidth].position = { (float)j,(float)i };
             }
+
+
         }
     }
+}
+
+void ComplexPlane::setCenter(Vector2i mousePixel)
+{
+    Vector2f screenPixelLocation;
+    screenPixelLocation = mapPixelToCoords(mousePixel);
+    m_plane_center = screenPixelLocation;
+    m_State = CALCULATING;   
+}
+
+void ComplexPlane::setMouseLocation(Vector2i mousePixel)
+{
+    Vector2f screenPixelLocation;
+    screenPixelLocation = mapPixelToCoords(mousePixel);
+    m_mouseLocation = screenPixelLocation;
+}
+
+void ComplexPlane::loadText(Text& text)
+{
+    stringstream ss;
+    ss << "Mandelbrot Set\n";
+    ss << "Center: (" << m_plane_center.x << "," << m_plane_center.y << ")\n";
+    ss << "Cursor: (" << m_mouseLocation.x << "," << m_mouseLocation.y << ")\n";
+    ss << "Left-click to Zoom in\n";
+    ss << "Right-click to Zoom out\n";
 }
